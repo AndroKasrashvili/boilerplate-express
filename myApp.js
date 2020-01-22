@@ -1,8 +1,8 @@
 require('custom-env').env();
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-console.log("hello world")
+console.log("hello world");
 // --> 7)  Mount the Logger middleware here
 
 
@@ -55,8 +55,8 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    let indxPath = __dirname + '/views/index.html';
-    res.sendFile(indxPath);
+    let indexPath = __dirname + '/views/index.html';
+    res.sendFile(indexPath);
 });
 
 app.get('/json', (req, res) => {
@@ -72,6 +72,26 @@ app.get('/', (req, res) => {
  res.send("Hello express");
 
 });
+
+app.get('/now', (req, res, next) => {
+    req['time'] = new Date().toString();
+    next();
+},(req, res) => {
+    res.json({time: req.time});
+});
+
+app.get('/:word/echo', (req, res) => {
+   res.json({echo: req.params.word});
+});
+
+
+app.route('/name')
+    .get((req, res) => {
+        res.json({name: req.query.firstN + ' ' + req.query.lastN});
+    })
+    .post((req, res) => {
+
+    });
 
 // This would be part of the basic setup of an Express app
 // but to allow FCC to run tests, the server is already active
