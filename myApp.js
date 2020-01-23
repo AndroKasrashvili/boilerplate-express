@@ -1,4 +1,6 @@
 require('custom-env').env();
+
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
@@ -84,13 +86,14 @@ app.get('/:word/echo', (req, res) => {
    res.json({echo: req.params.word});
 });
 
+app.use('/name', bodyParser.urlencoded({extended: false}));
 
 app.route('/name')
     .get((req, res) => {
         res.json({name: req.query.firstN + ' ' + req.query.lastN});
     })
     .post((req, res) => {
-
+        res.json({name: req.body.first + ' ' + req.body.last});
     });
 
 // This would be part of the basic setup of an Express app
